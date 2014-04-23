@@ -8,7 +8,7 @@
 
 #import "DRPostContentViewController.h"
 
-@interface DRPostContentViewController ()
+@interface DRPostContentViewController () <UIWebViewDelegate>
 
 @end
 
@@ -40,6 +40,7 @@
         //Display web content
         self.webView.hidden = NO;
         self.textView.hidden = YES;
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
         [self.webView loadRequest:[NSURLRequest requestWithURL:self.contentURL]];
     }
@@ -48,6 +49,19 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    self.webView.hidden = YES;
+    self.textView.hidden = NO;
+    
+    self.textView.text = @"Unable to load content, please visit this post later.";
 }
 
 @end
