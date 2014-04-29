@@ -56,12 +56,16 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    self.webView.hidden = YES;
-    self.textView.hidden = NO;
+    if([error code] != NSURLErrorCancelled) {
     
-    self.textView.text = @"Unable to load content, please visit this post later.";
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        self.webView.hidden = YES;
+        self.textView.hidden = NO;
+        
+        self.textView.text = @"Unable to load content, please visit this post later.";
+    }
 }
 
 @end
